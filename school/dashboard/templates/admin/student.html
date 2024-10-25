@@ -1,0 +1,161 @@
+{% extends 'admin/layout/base.html' %}
+{% load static %}
+
+{% block style %}
+    <style>
+        /* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Sidebar styling */
+.sidebar {
+    height: 100vh;
+    padding: 20px;
+    position: fixed;
+    background-color: rgb(29, 29, 39);
+}
+
+.sidebar-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-item .nav-link {
+    padding: 15px 10px;
+    font-size: 1.1rem;
+    display: block;
+}
+
+.nav-item .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+/* Main content area */
+.main-content {
+    margin-left: 240px;
+    padding: 20px;
+}
+
+.main-content .table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.table-hover .table-row:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.modal-body {
+    font-size: 1rem;
+}
+
+    </style>
+        {% endblock %}
+
+        {% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-md-10 main-content">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+                <h2>Students List</h2>
+                <div>
+                    {% if user.role == 'admin' %}
+                    <a href="{% url 'dashboard:add_student' %}"><button class="btn btn-primary">Add Students</button></a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Search and Filter -->
+    <form method="GET" action="{% url 'dashboard:student' %}">
+    <div class="input-group mb-4">
+        <!-- Class Selection Dropdown -->
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="classSelect">Class</label>
+        </div>
+        <select class="custom-select" id="classSelect" name="class_name" onchange="this.form.submit()">
+            <option value="">Choose...</option>
+            <option value="Class 8" {% if selected_class == 'Class 8' %}selected{% endif %}>Class 8</option>
+            <option value="Class 9" {% if selected_class == 'Class 9' %}selected{% endif %}>Class 9</option>
+            <option value="Class 10" {% if selected_class == 'Class 10' %}selected{% endif %}>Class 10</option>
+            <option value="Class +1" {% if selected_class == 'Class +1' %}selected{% endif %}>Class +1</option>
+            <option value="Class +2" {% if selected_class == 'Class +2' %}selected{% endif %}>Class +2</option>
+        </select>
+    </div>
+</form>
+
+<!-- Student Table -->
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Student ID</th>
+            <th>Email Address</th>
+            <th>Class</th>
+            <th>Gender</th>
+            {% if user.role == 'admin' %}
+            <th>Add to Library</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for student in students %}
+        <tr class="table-row" style="cursor: pointer;" onclick="window.location.href='{% url 'dashboard:student_details' student.id %}'">
+            <td>{{ student.name }}</td>
+            <td>{{ student.id }}</td>
+            <td>{{ student.email }}</td>
+            <td>{{ student.class_name }}</td>
+            <td>{{ student.gender }}</td>
+            {% if user.role == 'admin' %}
+            <td>
+                <a href="{% url 'dashboard:add_to_library' student.id %}" class="btn btn-primary">Add</a>
+            </td>
+            {% endif %}
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" class="text-center">No students found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Student Details -->
+<div class="modal fade" id="studentModal" tabindex="-1" role="dialog" aria-labelledby="studentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="studentModalLabel">Cody Fisher</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Email:</strong> tim.jennings@example.com</p>
+                <p><strong>Class:</strong> SS 3</p>
+                <p><strong>Gender:</strong> Female</p>
+                <p><strong>Age:</strong> 17</p>
+                <!-- Add more student details -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+{% endblock %}
+

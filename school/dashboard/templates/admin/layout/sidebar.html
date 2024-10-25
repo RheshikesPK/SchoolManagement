@@ -1,0 +1,88 @@
+<style>
+    /* Custom styles */
+
+    /* Sidebar styling for all sizes */
+    .sidebar, .offcanvas-body {
+        height: 100vh;
+        padding: 20px;
+        background-color: rgb(29, 29, 39);
+        color: white;
+    }
+
+    .sidebar-header, .offcanvas-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
+    }
+
+    .nav-item .nav-link {
+        padding: 15px 10px;
+        font-size: 1.1rem;
+        display: block;
+        color: white;
+    }
+
+    .nav-item .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 5px;
+    }
+
+
+</style>
+
+
+<!-- Toggle button for sidebar on smaller screens -->
+<button class="btn btn-primary d-md-none mt-2 mb-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+    ☰ Menu
+</button>
+
+<!-- Off-canvas sidebar for smaller screens with the same style -->
+<div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+    <div class="offcanvas-header">
+        <h2 class="offcanvas-title" id="offcanvasSidebarLabel">Rheshikes</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard:admindash' %}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard:teacher' %}">Teacher</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard:student' %}">Students</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard:library' %}">Library Management</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard:fees' %}">Fees</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Sidebar for larger screens -->
+<div class="col-md-2 d-none d-md-block sidebar">
+    <div class="sidebar-header">
+        <h2>Rheshikes</h2>
+    </div>
+    <ul class="nav flex-column mt-4">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard:admindash' %}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard:teacher' %}">Teacher</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard:student' %}">Students</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard:library' %}">Library Management</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard:fees' %}">Fees</a>
+        </li>
+    </ul>
+</div>
