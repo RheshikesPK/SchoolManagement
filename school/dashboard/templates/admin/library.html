@@ -183,9 +183,9 @@
         <form action="{% url 'dashboard:delete_library' book.id %}" method="post">
         {% endfor %}
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Delete</button>
+            <button type="submit" class="btn btn-danger w-100">Delete</button>
         </form>
-        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-secondary w-100" onclick="closeModal()">Cancel</button>
     </div>
 </div>
 
