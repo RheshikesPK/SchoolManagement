@@ -125,12 +125,13 @@
                         <div class="mt-4">
                         
                         </div>
-            
+                        {% if user.role == 'admin' %}
                         <!-- Edit and Delete Buttons -->
                         <div class="mt-4">
                             <a href="{% url 'dashboard:edit_student' student.id %}" class="btn btn-primary me-2">Edit Details</a>
                             <button class="btn btn-primary" onclick="confirmDelete(1)">Delete</button>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </main>
