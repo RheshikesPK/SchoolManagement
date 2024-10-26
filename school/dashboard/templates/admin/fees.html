@@ -71,17 +71,38 @@
             margin: 15% auto; /* 15% from the top and centered */
             padding: 20px;
             border: 1px solid #888;
-            width: 20%; /* Could be more or less, depending on screen size */
+            width: 90%; /* Adjusted for better fitting on mobile */
+            max-width: 500px; /* Max width for larger screens */
+        }
 
+        /* Centering the table for smaller screens */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0; /* Remove left margin on small screens */
+                padding: 10px; /* Adjust padding */
+            }
+            .table-responsive {
+                margin: 0; /* Remove margin for responsive behavior */
+                width: 100%; /* Ensure it takes full width */
+                overflow-x: auto; /* Allow horizontal scrolling if needed */
+            }
+            .table {
+                font-size: 0.9rem; /* Reduce font size for mobile */
+            }
+        }
+
+        /* Button alignment */
+        .action-buttons {
+            display: flex;
+            justify-content: center; /* Center buttons in the table */
+            gap: 5px; /* Space between buttons */
         }
     </style>
-
-
 {% endblock %}
 
 {% block content %}
 <div class="container-fluid">
-    <div class="row">
+    <div class="row justify-content-center">
 
         <!-- Main Content -->
         <div class="col-md-10 main-content">
@@ -92,50 +113,50 @@
                     {% if user.role == 'admin' or user.role == 'teacher' %}
                     <a href="{% url 'dashboard:add_fees' %}"><button class="btn btn-primary">Add Fees Record</button></a>
                     {% endif %}
-
                 </div>
             </div>
 
             <!-- Fees Table -->
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Payment Date</th>
-                        <th>Due Date</th>
-                        {% if user.role == 'admin' or user.role == 'teacher' %}
-                        <th>Actions</th>
-                        {% endif %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for fee in fees_list %}
-                        <tr class="table-row">
-                            <td>{{ fee.student.name }}</td> <!-- Assuming you have a related field 'student' -->
-                            <td>{{ fee.amount }}</td>
-                            <td>{{ fee.status }}</td>
-                            <td>{{ fee.payment_date }}</td>
-                            <td>{{ fee.due_date }}</td>
+            <div class="table-responsive">
+                <table class="table table-hover mx-auto">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Payment Date</th>
+                            <th>Due Date</th>
                             {% if user.role == 'admin' or user.role == 'teacher' %}
-                            <td>
-                                <a href="{% url 'dashboard:edit_fees' fee.id %}" class="btn btn-primary me-2">
-                                    Edit <i class="bi bi-pencil-fill action-icons"></i>
-                                </a>
-                                <button class="btn btn-primary" onclick="confirmDelete()">Delete<i class="bi bi-trash-fill action-icons"></i></button>
-                            </td>
+                            <th>Actions</th>
                             {% endif %}
                         </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="7" class="text-center">No fee records found.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for fee in fees_list %}
+                            <tr class="table-row">
+                                <td>{{ fee.student.name }}</td> <!-- Assuming you have a related field 'student' -->
+                                <td>{{ fee.amount }}</td>
+                                <td>{{ fee.status }}</td>
+                                <td>{{ fee.payment_date }}</td>
+                                <td>{{ fee.due_date }}</td>
+                                {% if user.role == 'admin' or user.role == 'teacher' %}
+                                <td class="action-buttons">
+                                    <a href="{% url 'dashboard:edit_fees' fee.id %}" class="btn btn-primary btn-sm">
+                                        Edit <i class="bi bi-pencil-fill action-icons"></i>
+                                    </a>
+                                    <button class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete<i class="bi bi-trash-fill action-icons"></i></button>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center">No fee records found.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    
     </div>
 </div>
 
@@ -163,7 +184,5 @@
     function closeModal() {
         document.getElementById('confirmationModal').style.display = 'none'; // Hide the modal
     }
-
 </script>
 {% endblock %}
-

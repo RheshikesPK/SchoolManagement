@@ -303,3 +303,37 @@ class LogoutView(View):
         request.session.flush()  # Clear the session data
         messages.success(request, 'You have been logged out.')
         return redirect('dashboard:log')  # Redirect to the login page
+    
+
+class UpdateLibraryView(UpdateView):
+    template_name = 'admin/library.html'  # Change this to your desired template for updating library details
+    form_class = BorrowedBookForm
+    success_url = reverse_lazy('dashboard:manage_library')  # Redirect to the library page after updating
+
+    def get_object(self, **kwargs):
+        book_id = self.kwargs.get('id')  # Fetch 'book_id' from the URL
+        return get_object_or_404(BorrowedBook, id=book_id)  # Fetch the library book instance
+
+    def get(self, request, *args, **kwargs):
+        book_id = kwargs.get('id')
+        if book_id:
+            book = self.get_object()  # Call get_object to retrieve the book instance
+            form = self.form_class(instance=book)  # Bind the form to the existing book instance
+        else:
+            form = self.form_class()  # Create a new form if no book_id is provided
+        return self.render_to_response({'form': form})
+
+    def form_valid(self, form):
+        book_id = self.kwargs.get('id')  # Fetch 'book_id' from the URL
+        if book_id:
+            book = self.get_object()  # Retrieve the existing book instance
+            form = self.form_class(self.request.POST, instance=book)  # Bind the form to the existing book instance
+        form.save()  # Save the form data to update the existing book instance
+        return super().form_valid(form)
+    
+
+class DeleteLibraryView(View):
+    def post(self, request, book_id):
+        library_member = get_object_or_404(BorrowedBook, id=book_id)  # Fetch the library member using the book_id (or student ID)
+        library_member.delete()  # Delete the library member instance
+        return redirect('dashboard:manage_library') 

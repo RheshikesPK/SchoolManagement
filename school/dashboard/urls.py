@@ -25,6 +25,8 @@ urlpatterns = [
     path('add_fees/', AddFeesView.as_view(), name='add_fees'),
     path('edit_fees/<int:fees_id>/', UpdateFeesView.as_view(), name='edit_fees'),
     path('fees/<int:fees_id>/delete/', DeleteFeesView.as_view(), name='delete_fees'),
+    path('edit_library/<int:id>/', UpdateLibraryView.as_view(), name='edit_library'),
+    path('delete_library/<int:book_id>/delete/', DeleteLibraryView.as_view(), name='delete_library'),
     path('', LoginView.as_view(), name='log'),
     path('logout/', LogoutView.as_view(), name='logout'),
 
