@@ -270,7 +270,7 @@ class DeleteFeesView(View):
     
 
 class LoginView(FormView):
-    template_name = 'admin/login.html'  # Template for the login page
+    template_name = 'login/login.html'  # Template for the login page
     form_class = LoginForm
 
     def form_valid(self, form):
